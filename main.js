@@ -8,25 +8,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const perfil = document.getElementById('perfil');
 
     (async () => {
-            try{
-            const req = await fetch('https://github.com/SabrinaCorregio');
-            if (!req.ok){
-                alert('Erro na requisição')
+        try {
+            // Requisição Ajax via Fetch API para seu perfil
+            const req = await fetch('https://api.github.com/users/SabrinaCorregio');
+            
+            if (!req.ok) {
                 throw new Error('Erro na requisição');
             }
-            
+
             const dados = await req.json();
-            
+
+            // Preenchendo os dados na página
             avatar.src = dados.avatar_url;
-            nome.textContent = dados.name;
+            nome.textContent = dados.name || "Nome não informado";
             username.textContent = `@${dados.login}`;
             repositorios.textContent = dados.public_repos;
             seguidores.textContent = dados.followers;
             seguindo.textContent = dados.following;
-            perfil.href = dados.html_url;
-            } catch {
-                console.log('Erro - Perfil', err.message)
-                alert('Erro ao carregar o perfil, tente novamente!')
-            }
-        })();
+            perfil.href = dados.html_url; // Direciona para seu perfil
+        } catch (err) {
+            console.error('Erro - Perfil:', err.message);
+            alert('Erro ao carregar o perfil, tente novamente!');
+        }
+    })();
 });
